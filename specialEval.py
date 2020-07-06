@@ -25,7 +25,7 @@ from textwrap import wrap
 from sklearn.preprocessing import MultiLabelBinarizer
 from tensorflow.keras import backend as K
 
-# from model_evaluations import *
+from model_evaluations import *
 # from tfRecordFunctions import *
 
 def readRawFileIm(dataDir, thisEntry):
@@ -108,7 +108,7 @@ t1 = datetime.datetime.now()
 print('Loading network and settings...\n')
 
 
-imList = pd.read_csv('Info\\im_stats.csv', index_col=0)
+imList = pd.read_csv('Info\\im_stats_simulations.csv', index_col=0)
 
 covidMean = np.float32(156.3268545274254/255.0)
 covidSTD = np.float32(52.959808775820505/255.0)
@@ -162,7 +162,7 @@ for i in range(n_images):
     m = np.mean(img)
     s = np.std(img)
     print(i, m, s)
-    # img = (img - m)/s
+    img = (img - m)/s
     label = thisEntry['COVID-19']
     name = thisEntry['Image File']
 
@@ -183,14 +183,18 @@ t3 = datetime.datetime.now()
 fpr, tpr, thres = roc_curve(imList['COVID-19'].values,preds)
 auc_val = auc(fpr,tpr)
 
+# path = 'SaveOut'
+# np.save(os.path.join(path, 'Synth_fpr.npy'), fpr)
+# np.save(os.path.join(path, 'Synth_tpr.npy'), tpr)
 ## Start plot
 fig = plt.figure(2)
-fig.set_size_inches(6, 4.5)
+fig.set_size_inches(6, 6)
 plt.clf()
 plt.ion()    
 
 plt.plot(fpr, tpr)
-plt.title('Receiver Operating Characteristic (AUROC = ' + str(auc_val) + ')')
+plt.plot([0, 1],[0, 1], ':k', alpha=.5)
+plt.title("Receiver Operating Characteristic (AUROC = {:.4f})".format(auc_val))
 plt.xlabel('1 - Specificity')
 plt.ylabel('Sensitivity')
 

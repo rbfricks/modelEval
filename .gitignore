@@ -9,6 +9,9 @@ __pycache__/
 # Data directory
 data/
 images/
+data_orig/
+images_orig/
+SaveOut/
 
 # Distribution / packaging
 .Python
@@ -133,3 +136,4 @@ dmypy.json
 .pyre/
 COVIX_PathAK2.h5
 Info/im_stats.csv
+Info/im_stats_simulations.csv
